@@ -1,17 +1,10 @@
-terraform {
-  required_providers {
-    azurerm = {
-        source = "hashicorp/azurerm"
-        version = "5.0.0"
-    }
-  }
+module "rg-mod" {
+  source = "../modules/azurerm_resource_group"
+  rgs    = var.rg1-mod-var
 }
-provider "azurerm" {
-  features {
-    
-  }
-}
-resource "azurerm_resource_group" "rg1" {
-  name = "rg1-test"
-  location = "eastus"
+
+module "sa-mod" {
+  depends_on = [module.rg-mod]
+  source     = "../modules/azurerm_storage_account"
+  sa         = var.sa-mod-var
 }
